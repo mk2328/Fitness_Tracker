@@ -23,4 +23,12 @@ route.put("/edit_exer/:id", auth_middleware, controller.Exer_update);
 
 route.get("/Get_Workout/:id", auth_middleware, controller.view_workoutbyid);
 
+
+
+// my new code
+route.get("/workouts", controller.getUserBMIAndWorkouts);
+
+
+
+
 module.exports = route;

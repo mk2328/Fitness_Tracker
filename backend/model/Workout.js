@@ -1,54 +1,57 @@
 const mongoose = require("mongoose");
-
 const workoutSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true, 
-    },
-    workout_name: {
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: false, // ✅ Now optional
+  },
+  goalType: {
+    type: String,
+    enum: ["weight loss", "weight gain", "weight maintenance"],
+    required: true, // Goal type is mandatory
+  },
+  workouts: [
+    {
+      day: {
         type: String,
-        required: true,
-    },
-    exercises: [
+        required: true, // Each workout will have a specific day (e.g., Monday, Tuesday)
+      },
+      exercises: [
         {
-            exerciseId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Excercise", 
-                required: true,
-            },
-            sets: [
-                {
-                    set_num: {
-                        type: Number,
-                        required: true, 
-                    },
-                    reps: {
-                        type: Number,
-                        required: true,
-                    },
-                    weight: {
-                        type: Number,
-                        required: false, 
-                    },
-                }
-            ],
+          exerciseId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Exercise", // Reference to the Exercise model
+            required: true,
+          },
+          duration: {
+            type: Number, // Duration in seconds
+            required: true,
+          },
+          calories_burned: {
+            type: Number, // Total calories burned for this exercise
+            required: true,
+          },
         },
-    ],
-    created_on: {
-        type: Date,
-        required: true,
-        default: Date.now, 
+      ],
+      total_calories_burned: {
+        type: Number, // Total calories burned during this workout
+        default: 0, // This will be calculated later
+      },
     },
-    day:{
-        type:String,
-        required:true
-    },
-    notes: {
-        type: String, 
-        maxlength: 200,
-    },
+  ],
+  created_on: {
+    type: Date,
+    default: Date.now,
+  },
+  notes: {
+    type: String,
+    maxlength: 200,
+  },
+  isSuggested: {
+    type: Boolean,
+    default: false, // Indicates if this workout is suggested or custom
+  },
 });
 
-const Workout = mongoose.model("Workout", workoutSchema);
+const Workout = mongoose.model('Workout', workoutSchema);
 module.exports = Workout;

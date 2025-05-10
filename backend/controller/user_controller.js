@@ -144,7 +144,7 @@ const update_info = async (req, res) => {
   
       // BMI Calculation
       const bmi = weightKg / (heightM * heightM);
-      const idealWeight = 22 * (heightM * heightM);  // Ideal weight assuming BMI of 22
+      const idealWeight = 22 * (heightM * heightM);  // Ideal weight assuming BMI of 22 
   
       // Categorizing BMI
       let bmiCategory = '';

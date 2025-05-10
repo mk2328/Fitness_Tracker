@@ -1,6 +1,8 @@
 const Excercise = require("../model/Excercise");
 const Workout = require("../model/Workout");
 const WorkoutProgress = require("../model/Workout_Progress");
+const Users_Info=require("../model/Users_info");
+
 
 //Add Excercise
 const add_excercise = async(req,res)=>{
@@ -276,11 +278,62 @@ const delete_progress = async(req,res)=>{
   }
 }
 
+
+ const getUserBMIAndWorkouts = async (req, res) => {
+  try {    
+    // Fetch the user's height, weight, and calculate BMI
+    const userId = req.userId; // assuming auth middleware sets this
+      const user = await Users_Info.findOne({ userId: userId }); // adjust if needed
+  
+      // if (!user || !user.height || !user.weight) {
+      //   return res.status(400).json({ message: "Height or weight missing" });
+      // }
+
+    // const heightCm = user.height;
+    // const weightKg = user.weight;
+    // const heightM = heightCm / 100; // Convert height to meters
+    const bmi = 12;
+    
+    let goal = '';
+
+    // Categorizing BMI and setting goal
+    if (bmi < 18.5) {
+      goal = 'weight gain';
+    } else if (bmi >= 18.5 && bmi < 24.9) {
+      goal = 'weight maintenance';
+    } else if (bmi >= 25 && bmi < 29.9) {
+      goal = 'weight loss';
+    } else {
+      goal = 'weight loss';
+    }
+
+    // Fetch workouts based on goalType
+    const workouts = await Workout.find({ goalType: goal })
+      .populate("workouts.exercises.exerciseId")  // Populate exercises with Exercise details
+      .populate("userId"); // Populate userId to get user details
+
+    if (workouts.length === 0) {
+      return res.status(200).json({ message: "No workouts available for this goal type" });
+    }
+
+    // Returning BMI details along with workouts
+    return res.status(200).json({
+      bmi: bmi.toFixed(2),
+      goal: goal,
+      workouts: workouts
+    });
+
+  } catch (err) {
+    console.log("Error fetching workouts:", err.message);
+    res.status(500).json({ message: "Error fetching workouts: " + err.message });
+  }
+};
+
   
 module.exports={add_excercise,view_excercise,Exer_update,
   add_workout,view_workouts,delete_workout,
   delete_exercise,update_workout,view_workoutbyid,
-  progress,viewProgressByDate, viewProgressByMonthYear,delete_progress
+  progress,viewProgressByDate, viewProgressByMonthYear,delete_progress,getUserBMIAndWorkouts
 
 
 }
