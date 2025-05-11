@@ -1,5 +1,6 @@
 const express= require("express");
 const controller = require("../controller/workout_controller");
+const workoutProgressController  = require("../controller/workoutProgressController");
 const auth_middleware = require("../middleware/auth_middleware");
 const route = express.Router();
 
@@ -26,7 +27,8 @@ route.get("/Get_Workout/:id", auth_middleware, controller.view_workoutbyid);
 
 
 // my new code
-route.get("/workouts", controller.getUserBMIAndWorkouts);
+route.get("/workouts",auth_middleware, controller.getUserBMIAndWorkouts);
+route.post('/update-progress',auth_middleware, workoutProgressController.updateWorkoutProgress);
 
 
 

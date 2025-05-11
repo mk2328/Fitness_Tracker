@@ -20,7 +20,7 @@ const workoutSchema = new mongoose.Schema({
         {
           exerciseId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Exercise", // Reference to the Exercise model
+            ref: "Excercise", // Reference to the Exercise model
             required: true,
           },
           duration: {

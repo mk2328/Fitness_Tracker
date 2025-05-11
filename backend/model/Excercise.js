@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const exerciseSchema = new mongoose.Schema({
+const excerciseSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -22,11 +22,7 @@ const exerciseSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  default_duration: {
-    type: Number, // in seconds or minutes
-    required: false,
-    default: 0,
-  },
+  
   calories_burned_per_minute: {
     type: Number, // Calories burned per minute for this exercise
     required: true,
@@ -38,5 +34,5 @@ const exerciseSchema = new mongoose.Schema({
   },
 });
 
-const Exercise = mongoose.model("Exercise", exerciseSchema);
-module.exports = Exercise;
+const Excercise = mongoose.model("Excercise", excerciseSchema);
+module.exports = Excercise;
